@@ -10,7 +10,8 @@ import (
 func loginPage(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./templates/login.html")
 	if err != nil {
-		log.Panic("Error while parsing Login page")
+		log.Println("Error parsing Login page:", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
@@ -45,5 +46,5 @@ func main() {
 	http.HandleFunc("/validateLogin", validateLogin)
 
 	log.Println("Listening...")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8000", nil)
 }
