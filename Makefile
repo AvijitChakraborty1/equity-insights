@@ -9,7 +9,7 @@ build_front:
 	cd ./front-service && mv ./${FRONT_BINARY} ./cmd/web/${FRONT_BINARY}
 	@echo "Done!"
 
-# start_app starts the app
+# start_app builds the front end lib and starts the app
 start_app: build_front
 	@echo "Starting the app Equity Insights"
 	cd ./front-service/cmd/web && ./${FRONT_BINARY} &
