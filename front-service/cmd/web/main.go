@@ -46,5 +46,8 @@ func main() {
 	http.HandleFunc("/validateLogin", validateLogin)
 
 	log.Println("Listening...")
-	http.ListenAndServe(":8000", nil)
+	err := http.ListenAndServe(":80", nil)
+	if err != nil {
+		log.Panic(err)
+	}
 }

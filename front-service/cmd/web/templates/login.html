@@ -65,6 +65,40 @@
             background-color: azure;
         }
     </style>
+
+<script>
+    function handleLogin() {
+        // Get username and password values
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const payload = {
+            action: "auth",
+            auth: {
+                email: username,
+                password: password,
+            }
+        }
+
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        const body = {
+            method: "POST",
+            {{/* body: JSON.stringify(payload), */}}
+            {{/* headers: headers, */}}
+        }
+
+        fetch("http:\/\/localhost:8080", body)
+        .then((response) => response.json())
+        .then((data) => {
+                console.log("Response from broker service: " + data.message);
+        })
+        .catch((error) => {
+            console.log("Error happened");
+        })
+    }
+</script>
 </head>
 
 <body>
@@ -74,13 +108,12 @@
             <h1 class="heading">Welcome to Equity Buddy!!</h1>
         </div>
         <div class="div-cred">
-            <form action="/validateLogin" method="POST">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
-                <button type="submit">Login</button>
-            </form>
+
+                <button type="button" onclick="handleLogin()">Login</button>
         </div>
     </div>
 </body>
