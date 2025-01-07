@@ -1,5 +1,6 @@
 FRONT_END_BINARY=frontApp
 BROKER_BINARY=brokerApp
+AUTH_BINARY=authApp
 
 ## up: starts all containers in the background without forcing build
 up:
@@ -8,7 +9,7 @@ up:
 	@echo "Docker images started!"
 
 ## up_build: stops docker-compose (if running), builds all projects and starts docker compose
-up_build: build_broker
+up_build: build_broker build_auth
 	@echo "Stopping docker images (if running...)"
 	cd project && docker-compose down
 	@echo "Building (when required) and starting docker images..."
@@ -21,12 +22,6 @@ down:
 	cd project && docker-compose down
 	@echo "Done!"
 
-## build_broker: builds the broker binary
-build_broker:
-	@echo "Building broker binary..."
-	cd ./broker-service && env GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./cmd/api
-	@echo "Done!"
-
 # build_front builds the front end binary
 build_front:
 	@echo "Building front end binary..."
@@ -34,6 +29,18 @@ build_front:
 	@echo "Done!"
 	@echo "Moving binary to cmd/web directory..."
 	cd ./front-service && mv ./${FRONT_END_BINARY} ./cmd/web/${FRONT_END_BINARY}
+	@echo "Done!"
+
+# build_broker: builds the broker binary
+build_broker:
+	@echo "Building broker binary..."
+	cd ./broker-service && env GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./cmd/api
+	@echo "Done!"
+
+# build_auth: builds the authentication binary
+build_auth:
+	@echo "Building auth binary..."
+	cd ./authentication-service && env GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -o ${AUTH_BINARY} ./cmd/api
 	@echo "Done!"
 
 # start_app builds the front end lib and starts the app
